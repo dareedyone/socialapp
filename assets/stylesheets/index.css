@@ -682,17 +682,35 @@ button:focus {
     width: 70px;
     height: 70px;
   }
+  .post-comment-contain h6 {
+    font-size: 15px;
+  }
+  .post-comment-contain .real-comment {
+    font-size: 12px;
+  }
 }
 @media (max-width: 393px) {
   .search-tab,
   .search-tab-secondary {
     width: 180% !important;
   }
+  .post-comment-contain h6 {
+    font-size: 14px;
+  }
+  .post-comment-contain .real-comment {
+    font-size: 11px;
+  }
 }
 @media (max-width: 368px) {
   .search-tab,
   .search-tab-secondary {
     width: 200% !important;
+  }
+  .post-comment-contain h6 {
+    font-size: 13px;
+  }
+  .post-comment-contain .real-comment {
+    font-size: 10px;
   }
 }
 

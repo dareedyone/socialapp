@@ -124,8 +124,8 @@
                         </div>
                     </div> -->
 
-                    <div class="card my-2">
-                        <div class="card-body p-2 posts">
+                    <div id="" class="card my-2 profile-posts-container bg-transparent">
+                        <!-- <div class="card-body p-2">
                             <div class="card-title position-relative d-flex">
                                 <img class="status-pic rounded-circle mr-3" src="assets/images/user-3.jpg"
                                     alt="profile picture">
@@ -201,7 +201,7 @@
 
 
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                 </div>

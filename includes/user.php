@@ -512,19 +512,20 @@ public function load_posts($arr) {
     // $sql = "SELECT user.user_id, user.firstname, user.lastname, user.picture, posts.id post_id, posts.text post_text, posts.image post_image, posts.time post_time FROM posts INNER JOIN user USING(user_id) WHERE user_id='$id' ORDER BY post_time DESC";
 
     // $sql = "SELECT user.user_id, user.firstname, user.lastname, user.picture, posts.id post_id, posts.text post_text, posts.image post_image, posts.time post_time, likes.id like_id, likes.liker_id FROM posts INNER JOIN user USING(user_id) left join likes ON (likes.post_id=posts.id) WHERE user_id='$id' ORDER BY post_time DESC";
-    $sql ="SELECT user.user_id, user.firstname, user.lastname, user.picture, posts.id post_id, posts.text post_text, posts.image post_image, posts.time post_time, GROUP_CONCAT(likes.id) like_id, GROUP_CONCAT(likes.liker_id) liker_id FROM posts INNER JOIN user USING(user_id) left join likes ON (likes.post_id=posts.id) WHERE user_id='$id' GROUP BY posts.id ORDER BY post_time DESC";
-// $sql = "SELECT * FROM posts where user_id = '$id'";
+    // $sql ="SELECT user.user_id, user.firstname, user.lastname, user.picture, posts.id post_id, posts.text post_text, posts.image post_image, posts.time post_time, GROUP_CONCAT(likes.id) like_id, GROUP_CONCAT(likes.liker_id) liker_id FROM posts INNER JOIN user USING(user_id) left join likes ON (likes.post_id=posts.id) WHERE user_id='$id' GROUP BY posts.id ORDER BY post_time DESC";
+
+$sql = "SELECT user.user_id, user.firstname, user.lastname, user.picture, posts.id post_id, posts.text post_text, posts.image post_image, posts.time post_time, GROUP_CONCAT(likes.id) like_id, GROUP_CONCAT(likes.liker_id) liker_id, c.comment_id, c.commenter_id, c.commenter_fullname, c.commenter_picture, c.comment_text, c.comment_time FROM posts INNER JOIN user USING(user_id) LEFT JOIN likes ON (likes.post_id=posts.id) LEFT JOIN (SELECT user.user_id, posts.id, comments.post_id cpid, GROUP_CONCAT(comments.id) comment_id, GROUP_CONCAT(comments.commenter_id) commenter_id, GROUP_CONCAT(CONCAT(user.firstname,' ', user.lastname)) commenter_fullname, GROUP_CONCAT(user.picture) commenter_picture, GROUP_CONCAT(comments.text SEPARATOR '----') comment_text, GROUP_CONCAT(comments.time) comment_time FROM comments RIGHT JOIN posts ON (comments.post_id = posts.id ) RIGHT JOIN user ON (commenter_id = user.user_id) GROUP BY comments.post_id) c ON (c.id = posts.id) WHERE posts.user_id='$id' GROUP BY posts.id ORDER BY post_time DESC";
 $result = $database->conn->query($sql);
 
 if ($result->num_rows > 0) {
   $res = $result->fetch_all(MYSQLI_ASSOC);
-array_push($garr, $res);
+  array_push($garr, $res);
 }                               
   }
   echo json_encode($garr);
   }
 
-  public function post_like ($id, $pid) {
+public function post_like ($id, $pid) {
 global $database;
 $sqlcheck = "SELECT * FROM `likes` WHERE post_id ='$pid' AND liker_id ='$id'";
 $sqldel = "DELETE FROM `likes` WHERE post_id ='$pid' AND liker_id ='$id'";
@@ -554,9 +555,26 @@ echo "unlike";
   public function post_comment ($uid, $pid, $comment) {
     global $database;
     $sqlins = "INSERT INTO `comments` (post_id, commenter_id, text) VALUES('$pid', '$uid', '$comment')";
+    $sqlsel = "SELECT * FROM `comments` WHERE post_id='$pid' AND commenter_id='$uid' AND text='$comment'";
+    
     if ($database->conn->query($sqlins) == true) {
-   echo "comment successful";
+  //  echo "comment successful";
+   $result = $database->conn->query($sqlsel);
+   if ($result->num_rows > 0) {
+     $postres = $result->fetch_assoc();
+     echo json_encode($postres);
+   }
     }
+      }
+
+  public function load_profile_posts($id) {
+    global $database;
+    $sql = "SELECT user.user_id, user.firstname, user.lastname, user.picture, posts.id post_id, posts.text post_text, posts.image post_image, posts.time post_time, GROUP_CONCAT(likes.id) like_id, GROUP_CONCAT(likes.liker_id) liker_id, c.comment_id, c.commenter_id, c.commenter_fullname, c.commenter_picture, c.comment_text, c.comment_time FROM posts INNER JOIN user USING(user_id) LEFT JOIN likes ON (likes.post_id=posts.id) LEFT JOIN (SELECT user.user_id, posts.id, comments.post_id cpid, GROUP_CONCAT(comments.id) comment_id, GROUP_CONCAT(comments.commenter_id) commenter_id, GROUP_CONCAT(CONCAT(user.firstname,' ', user.lastname)) commenter_fullname, GROUP_CONCAT(user.picture) commenter_picture, GROUP_CONCAT(comments.text SEPARATOR '----') comment_text, GROUP_CONCAT(comments.time) comment_time FROM comments RIGHT JOIN posts ON (comments.post_id = posts.id ) RIGHT JOIN user ON (commenter_id = user.user_id) GROUP BY comments.post_id) c ON (c.id = posts.id) WHERE posts.user_id='$id' GROUP BY posts.id ORDER BY post_time DESC";
+    $result = $database->conn->query($sql);
+    if ($result->num_rows > 0) {
+      $res = $result->fetch_all(MYSQLI_ASSOC);
+      echo json_encode($res);
+    } 
       }
 
 

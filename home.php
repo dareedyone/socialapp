@@ -33,7 +33,7 @@
                 <li class="list-group-item border-0 bg-transparent py-4">
                     <i class="fas fa-network-wired"></i>
                     <span>Posts</span>
-                    <span class="see-all ml-1 color-secondary">5</span>
+                    <span class="see-all ml-1 color-secondary postsNum"></span>
 
                 </li>
             </ul>
@@ -176,110 +176,30 @@
                     </div>
 
                     <hr class="m-0">
-                    <div class="post-comment-contain d-none">
-                        <div class="d-flex mt-2">
-                            <img class="profile-pic mr-2 rounded-circle" src="assets/images/user-5.jpg"
-                                alt="profile picture">
-                            <div class="bg-my-secondary rounded d-flex">
-                                <h6 class="color-second px-2">Adele grimb</h6>
-                                <span class="px-2 real-comment">Nice Lorem, keep it up</span>
-                            </div>
-                        </div>
-                        <div class="d-flex mt-2">
-                            <img class="profile-pic mr-2 rounded-circle" src="assets/images/user-2.jpg"
-                                alt="profile picture">
-                            <div class="bg-my-secondary rounded d-flex">
-                                <h6 class="color-second px-2">cynthia alob</h6>
-                                <span class="px-2 real-comment">You just wrote some rubbish</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="d-flex mt-2">
-                        <img class="profile-pic mr-2 rounded-circle" src="assets/images/user.jpg" alt="profile picture">
-                        <div class="post-comment-input-contain d-flex w-90">
-                            <!-- <input placeholder="write a comment here" type="text"
-                                class="bg-my-secondary rounded-left border border-secondary border-right-0 w-90 px-2 outline-none"> -->
-                            <textarea placeholder="write a comment here"
-                                class="post-comment-input resize-none bg-my-secondary rounded-left border outline-none border-secondary border-right-0 w-90 px-2 outline-none"
-                                name="post-text" cols="30" rows="1"></textarea>
-                            <div
-                                class="bg-my-secondary border border-secondary border-left-0 rounded-right px-2 outline-none">
-                                <button class="btn post-comment-btn p-0"><i
-                                        class="fas fa-camera-retro text-secondary"></i></button>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-
-
-                <div class="card-body bg-white p-2 mb-3 posts">
-                    <a href="visitprofile.php" class="card-title position-relative d-flex">
-                        <img class="status-pic rounded-circle mr-3" src="assets/images/user-3.jpg"
-                            alt="profile picture">
-                        <div class="d-flex pr-4 w-100 justify-content-between">
-                            <h6 class="color-second">George thomas</h6>
-                            <span class="border border-primary type px-1">Alumni</span>
-                        </div>
-
-                        <span class="position-absolute timespan text-secondary">18m</span>
-                    </a>
-                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus
-                        laborum consequatur cumque earum aperiam esse doloribus fuga obcaecati, exercitationem
-                        distinctio explicabo, non deserunt sint reiciendis, qui eius mollitia ea animi.</p>
-                    <img class="w-100" src="assets/pictures/128801575470745.jpg" alt="post picture">
-                    <!-- 
-                        <div>
-                    <hr class="m-1">
-                    <div class="d-flex justify-content-between px-3">
-                        <div class="d-flex">
-                            <div class="bg-primary like-container position-relative mr-1 rounded-circle">
-                                <i class="fas position-absolute like fa-thumbs-up"></i>
-                            </div>
-
-                            <div class="text-secondary">Atom taiwo and <span>2</span> others</div>
-                        </div>
-
-                        <div class="text-secondary">
-                            1 <span>Comment</span>
-                        </div>
-
-                    </div> 
-                </div>
-                -->
-                    <hr class="m-2">
-                    <div class="d-flex justify-content-around text-secondary">
-                        <button class="btn post-like">
-                            <i class="far fa-thumbs-up text-secondary"></i>
-                            <span>Like</span>
-                        </button>
-
-                        <button class="btn post-comment">
-                            <i class="far fa-comment-alt text-secondary"></i>
-                            <span>Comment</span>
-                        </button>
-                    </div>
-
-                    <hr class="m-0">
                     <div class="post-comment-contain">
                         <div class="d-flex mt-2">
-                            <img class="profile-pic mr-2 rounded-circle" src="assets/images/user-5.jpg"
-                                alt="profile picture">
+                            <a href="visitprofile.php">
+                                <img class="profile-pic mr-2 rounded-circle" src="assets/images/user-5.jpg"
+                                    alt="profile picture">
+                            </a>
+
                             <div class="bg-my-secondary rounded d-flex">
                                 <h6 class="color-second px-2">Adele grimb</h6>
                                 <span class="px-2 real-comment">Nice Lorem, keep it up</span>
                             </div>
                         </div>
                         <div class="d-flex mt-2">
-                            <img class="profile-pic mr-2 rounded-circle" src="assets/images/user-2.jpg"
-                                alt="profile picture">
+                            <a href="visitprofile.php">
+                                <img class="profile-pic mr-2 rounded-circle" src="assets/images/user-2.jpg"
+                                    alt="profile picture">
+                            </a>
+
                             <div class="bg-my-secondary rounded d-flex">
                                 <h6 class="color-second px-2">cynthia alob</h6>
                                 <span class="px-2 real-comment">You just wrote some rubbish</span>
                             </div>
                         </div>
+
                     </div>
 
                     <div class="d-flex mt-2">
@@ -297,86 +217,11 @@
                             </div>
                         </div>
 
-
                     </div>
                 </div>
-                <!-- <div class="card-body bg-white p-2 mb-3 posts">
-                    <a href="visitprofile.php" class="card-title position-relative d-flex">
-                        <img class="status-pic rounded-circle mr-3" src="assets/images/user-3.jpg"
-                            alt="profile picture">
-                        <div class="d-flex pr-4 w-100 justify-content-between">
-                            <h6 class="color-second">George thomas</h6>
-                            <span class="border border-primary type px-1">Alumni</span>
-                        </div>
-
-                        <span class="position-absolute timespan text-secondary">18m</span>
-                    </a>
-                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus
-                        laborum consequatur cumque earum aperiam esse doloribus fuga obcaecati, exercitationem
-                        distinctio explicabo, non deserunt sint reiciendis, qui eius mollitia ea animi.</p>
-                    <img class="w-100" src="assets/pictures/128801575470745.jpg" alt="post picture">
-                    <hr class="m-1">
-                    <div class="d-flex justify-content-between px-3">
-                        <div class="d-flex">
-                            <div class="bg-primary like-container position-relative mr-1 rounded-circle">
-                                <i class="fas position-absolute like fa-thumbs-up"></i>
-                            </div>
-
-                            <div class="text-secondary">Atom taiwo and <span>2</span> others</div>
-                        </div>
-
-                        <div class="text-secondary">
-                            1 <span>Comment</span>
-                        </div>
-
-                    </div>
-                    <hr class="m-2">
-                    <div class="d-flex justify-content-around text-secondary">
-                        <div>
-                            <i class="far fa-thumbs-up text-secondary"></i>
-                            <span>Like</span>
-                        </div>
-
-                        <div>
-                            <i class="far fa-comment-alt text-secondary"></i>
-                            <span>Comment</span>
-                        </div>
-                    </div>
-
-                    <hr class="m-2">
-                    <div>
-                        <div class="d-flex">
-                            <img class="profile-pic mr-2 rounded-circle" src="assets/images/user-5.jpg"
-                                alt="profile picture">
-                            <div class="bg-my-secondary rounded d-flex">
-                                <h6 class="color-second px-2">Adele grimb</h6>
-                                <span class="px-2 real-comment">Nice Lorem, keep it up</span>
-                            </div>
-                        </div>
-                        <div class="d-flex mt-2">
-                            <img class="profile-pic mr-2 rounded-circle" src="assets/images/user-2.jpg"
-                                alt="profile picture">
-                            <div class="bg-my-secondary rounded d-flex">
-                                <h6 class="color-second px-2">cynthia alob</h6>
-                                <span class="px-2 real-comment">You just wrote some rubbish</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="d-flex mt-2">
-                        <img class="profile-pic mr-2 rounded-circle" src="assets/images/user.jpg" alt="profile picture">
-                        <div class="d-flex w-90">
-                            <input placeholder="write a comment here" type="text"
-                                class="bg-my-secondary rounded-left border border-secondary border-right-0 w-90 px-2 outline-none">
-                            <div
-                                class="bg-my-secondary border border-secondary border-left-0 rounded-right px-2 outline-none">
-                                <i class="fas fa-camera-retro text-secondary"></i>
-                            </div>
-                        </div>
 
 
-                    </div>
-                </div> -->
+
 
 
                 <div class="card-body p-2 bg-white mb-3 posts">
@@ -422,7 +267,7 @@
                     </div>
 
                     <hr class="m-2">
-                    <div>
+                    <div class="post-comment-contain">
                         <div class="d-flex">
                             <img class="profile-pic mr-2 rounded-circle" src="assets/images/user-5.jpg"
                                 alt="profile picture">

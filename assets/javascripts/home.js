@@ -145,7 +145,6 @@ $(document).ready(function() {
         });
         // console.log(posts);
         posts.sort(function(a, b) {
-          // console.log(b, a);
           return b.post_id - a.post_id;
         });
         console.log(posts);
@@ -159,33 +158,28 @@ $(document).ready(function() {
       let postLikeComDisp = "d-none";
       let likerIds = post.liker_id;
       let userLikeCondition = false;
+      let commentsId = post.comment_id;
+      let commenterId = post.commenter_id;
+      let commenterName = post.commenter_fullname;
+      let commenterPic = post.commenter_picture;
+      let commentText = post.comment_text;
+      let commentTime = post.comment_time;
+      let commentDisp = "d-none";
+      let commentsHtml = "";
+      let commentCount = 0;
+      // let commentHtml = "";
       let likeCount = "";
       if (likerIds !== null) {
         postLikeComDisp = "d-block";
         likerIds = likerIds.split(",");
-        console.log(likerIds, index);
+        // console.log(likerIds, index);
 
         // console.log(userId, "useriddd");
         function checKIfUserId(el) {
-          console.log(
-            el,
-            userId,
-            el == userId,
-            typeof el,
-            typeof userId,
-            index
-          );
           return el == userId;
         }
         userLikeCondition = likerIds.find(checKIfUserId);
-        console.log(userLikeCondition, "my new", index);
-        // userLikeCondition = likerIds.map(el => {
-        //   if (el == userId) {
-        //     return true;
-        //   } else {
-        //     return false;
-        //   }
-        // })[0];
+        // console.log(userLikeCondition, "my new", index);
 
         //for if user has like a post already
         if (userLikeCondition !== undefined) {
@@ -195,6 +189,53 @@ $(document).ready(function() {
         }
         likeCount = likerIds.length;
       }
+
+      function renderComments(arr, arr1, arr2, arr3, arr4) {
+        // console.log(arr, arr1, arr2, arr3, arr4);
+        let commentHtml = "";
+        for (let i = 0; i < arr.length; i++) {
+          // console.log(arr1[i], arr2[i], arr3[i], arr4[i], index);
+          commentHtml += `<div class="d-flex mt-2">
+          <a href="visitprofile.php?id='${arr1[i]}'">
+           <img class="profile-pic mr-2 rounded-circle" src="assets/pictures/${arr2[i]}"
+              alt="profile picture">
+          </a>
+          <div class="bg-my-secondary rounded w-100">
+              <h6 class="color-second px-2">${arr3[i]}</h6>
+              <span class="px-2 real-comment">${arr4[i]}</span>
+          </div>
+      </div>`;
+          // console.log(commentHtml);
+          // if (arr.length - 1 == i) {
+          //   console.log("last");
+          // }
+          // return myhtml;
+        }
+        return commentHtml;
+        // console.log(commentHtml);
+      }
+
+      if (commentsId !== null) {
+        commentDisp = "d-block";
+        postLikeComDisp = "d-block";
+        commentsId = commentsId.split(",");
+        commentCount = commentsId.length;
+        commenterId = commenterId.split(",");
+        commenterName = commenterName.split(",");
+        commenterPic = commenterPic.split(",");
+        commentText = commentText.split("----");
+        commentTime = commentTime.split(",");
+        commentsHtml = renderComments(
+          commentsId,
+          commenterId,
+          commenterPic,
+          commenterName,
+          commentText
+        ).trim();
+        // console.log(commentsHtml);
+      }
+
+      //show or hide post image based on the condition that it exists
       post.post_image !== null
         ? (postImageDisp = "d-block")
         : (postImageDisp = "d-none");
@@ -282,7 +323,7 @@ $(document).ready(function() {
       </div>
 
       <div class="text-secondary">
-         <span>${0} Comment</span>
+         <span class="commentNum">${commentCount} Comment</span>
       </div>
 
   </div> 
@@ -301,45 +342,29 @@ $(document).ready(function() {
       </button>
   </div>
 
-  <hr class="m-0">
-  <div class="post-comment-contain d-none">
-      <div class="d-flex mt-2">
-          <img class="profile-pic mr-2 rounded-circle" src="assets/images/user-5.jpg"
-              alt="profile picture">
-          <div class="bg-my-secondary rounded d-flex">
-              <h6 class="color-second px-2">Adele grimb</h6>
-              <span class="px-2 real-comment">Nice Lorem, keep it up</span>
-          </div>
-      </div>
-      <div class="d-flex mt-2">
-          <img class="profile-pic mr-2 rounded-circle" src="assets/images/user-2.jpg"
-              alt="profile picture">
-          <div class="bg-my-secondary rounded d-flex">
-              <h6 class="color-second px-2">cynthia alob</h6>
-              <span class="px-2 real-comment">You just wrote some rubbish</span>
-          </div>
-      </div>
-  </div>
+                  <hr class="m-2">
+                    <div class="post-comment-contain ${commentDisp}">
+                        
+                       ${commentsHtml} 
+                    </div>
 
-  <div class="d-flex mt-2">
-      <img class="profile-pic mr-2 rounded-circle" src="assets/pictures/${userImg}" alt="profile picture">
-      <div class="post-comment-input-contain d-flex w-90">
-         
-          <textarea placeholder="write a comment here"
-              class="post-comment-input resize-none bg-my-secondary rounded-left border outline-none border-secondary border-right-0 w-90 px-2 outline-none"
-              name="post-text" cols="30" rows="1"></textarea>
-          <div
-              class="bg-my-secondary border border-secondary border-left-0 rounded-right px-2 outline-none">
-              <button  value="${
-                post.post_id
-              }" class="btn post-comment-btn p-0"><i
-                      class="far fa-comment-alt text-secondary"></i></button>
-          </div>
-      </div>
-
-
-  </div>
-</div>`;
+                    <div class="d-flex mt-2">
+                    <img class="profile-pic mr-2 rounded-circle" src="assets/pictures/${userImg}" alt="profile picture">
+                    <div class="post-comment-input-contain d-flex w-90">
+                       
+                        <textarea placeholder="write a comment here"
+                            class="post-comment-input resize-none bg-my-secondary rounded-left border outline-none border-secondary border-right-0 w-90 px-2 outline-none"
+                            name="post-text" cols="30" rows="1"></textarea>
+                        <div
+                            class="bg-my-secondary border border-secondary border-left-0 rounded-right px-2 outline-none">
+                            <button  value="${
+                              post.post_id
+                            }" class="btn post-comment-btn p-0"><i
+                                    class="far fa-comment-alt text-secondary"></i></button>
+                        </div>
+                    </div>
+                </div>
+              </div>`;
     });
     // console.log($("#home-timeline"));
     $("#home-timeline").html(postHtml);

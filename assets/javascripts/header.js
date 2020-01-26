@@ -4,13 +4,15 @@ $(document).ready(function() {
   let rqcount = 0;
   let fdcount = 0;
   let userId;
+  let user;
+  let fullname;
   $.post("./includes/session.php", function(data) {
     const a = JSON.parse(data);
     // console.log(a);
 
     if (a) {
-      let user = a[0];
-      let fullname = `${user.firstname} ${user.lastname}`;
+      user = a[0];
+      fullname = `${user.firstname} ${user.lastname}`;
       let picnumber = a[2];
       let requests = a[3];
       rqcount = a[4];
@@ -350,16 +352,59 @@ $(document).ready(function() {
     // console.log(textarea);
     // console.log(textarea.val().length);
     let mybutton = this;
-    console.log(mybutton.value, "btn val");
+    let postComCon = $(this)
+      .parent()
+      .parent()
+      .parent()
+      .parent()
+      .find(".post-comment-contain");
+    let selcn = $(this)
+      .parent()
+      .parent()
+      .parent()
+      .parent()
+      .find(".commentNum");
+
+    let selPostComNum = $(this)
+      .parent()
+      .parent()
+      .parent()
+      .parent()
+      .find(".commentNum")
+      .text();
+
+    let postComNum = parseInt(selPostComNum.match(/\d+/)[0]);
+    postComNum == false || postComNum == null
+      ? (postComNum = 0)
+      : (postComNum = postComNum);
+    console.log(postComNum, typeof postComNum);
+
+    // console.log(mybutton.value, "btn val");
 
     if (textarea.val().length > 0) {
       $.post(
         "./includes/postcomment.php",
-        { postid: mybutton.value, comment: textarea.val() },
+        { postid: mybutton.value, comment: textarea.val().trim() },
         function(response) {
-          if (response.trim() == "comment successful") {
+          console.log(response);
+          if (response !== "") {
             textarea.val("");
-            console.log(response);
+            let obj = JSON.parse(response);
+            console.log(obj);
+            postComCon.removeClass("d-none");
+
+            let commentHtml = `<div class="d-flex mt-2">
+            <a href="visitprofile.php?id='${obj.commenter_id}'">
+             <img class="profile-pic mr-2 rounded-circle" src="assets/pictures/${user.picture}"
+                alt="profile picture">
+            </a>
+            <div class="bg-my-secondary rounded w-100">
+                <h6 class="color-second px-2">${fullname}</h6>
+                <span class="px-2 real-comment">${obj.text}</span>
+            </div>
+        </div>`;
+            postComCon.append(commentHtml);
+            selcn.text(`${postComNum + 1} Comment`);
           }
         }
       );
@@ -447,5 +492,242 @@ $(document).ready(function() {
       .find("textarea");
     // console.log(pp);
     $(pp).focus();
+  });
+
+  //load posts from home and profile
+  function renderPosts(arr) {
+    let postHtml = arr.map((post, index) => {
+      let postImageDisp = "d-none";
+      let postLikeComDisp = "d-none";
+      let likerIds = post.liker_id;
+      let userLikeCondition = false;
+      let commentsId = post.comment_id;
+      let commenterId = post.commenter_id;
+      let commenterName = post.commenter_fullname;
+      let commenterPic = post.commenter_picture;
+      let commentText = post.comment_text;
+      let commentTime = post.comment_time;
+      let commentDisp = "d-none";
+      let commentsHtml = "";
+      let commentCount = 0;
+      // let commentHtml = "";
+      let likeCount = "";
+      if (likerIds !== null) {
+        postLikeComDisp = "d-block";
+        likerIds = likerIds.split(",");
+        // console.log(likerIds, index);
+
+        // console.log(userId, "useriddd");
+        function checKIfUserId(el) {
+          return el == userId;
+        }
+        userLikeCondition = likerIds.find(checKIfUserId);
+        // console.log(userLikeCondition, "my new", index);
+
+        //for if user has like a post already
+        if (userLikeCondition !== undefined) {
+          userLikeCondition = "text-primary";
+        } else {
+          userLikeCondition = "text-secondary";
+        }
+        likeCount = likerIds.length;
+      }
+
+      function renderComments(arr, arr1, arr2, arr3, arr4) {
+        // console.log(arr, arr1, arr2, arr3, arr4);
+        let commentHtml = "";
+        for (let i = 0; i < arr.length; i++) {
+          // console.log(arr1[i], arr2[i], arr3[i], arr4[i], index);
+          commentHtml += `<div class="d-flex mt-2">
+          <a href="visitprofile.php?id='${arr1[i]}'">
+           <img class="profile-pic mr-2 rounded-circle" src="assets/pictures/${arr2[i]}"
+              alt="profile picture">
+          </a>
+          <div class="bg-my-secondary rounded w-100">
+              <h6 class="color-second px-2">${arr3[i]}</h6>
+              <span class="px-2 real-comment">${arr4[i]}</span>
+          </div>
+      </div>`;
+          // console.log(commentHtml);
+          // if (arr.length - 1 == i) {
+          //   console.log("last");
+          // }
+          // return myhtml;
+        }
+        return commentHtml;
+        // console.log(commentHtml);
+      }
+
+      if (commentsId !== null) {
+        commentDisp = "d-block";
+        postLikeComDisp = "d-block";
+        commentsId = commentsId.split(",");
+        commenterId = commenterId.split(",");
+        commentCount = commentsId.length;
+        commenterName = commenterName.split(",");
+        commenterPic = commenterPic.split(",");
+        commentText = commentText.split("----");
+        commentTime = commentTime.split(",");
+        commentsHtml = renderComments(
+          commentsId,
+          commenterId,
+          commenterPic,
+          commenterName,
+          commentText
+        ).trim();
+        // console.log(commentsHtml);
+      }
+
+      //show or hide post image based on the condition that it exists
+      post.post_image !== null
+        ? (postImageDisp = "d-block")
+        : (postImageDisp = "d-none");
+      const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+      ];
+      let postDispTime = "";
+      let test = post.post_time;
+      let d = new Date(test);
+      let nd = new Date();
+      let dateDiff = nd - d;
+      let ddSec = dateDiff / 1000;
+      let ddMin = ddSec / 60;
+      let ddHours = ddMin / 60;
+      let ddDays = ddHours / 24;
+
+      let pDateDay = d.getDay();
+      let pDateMonth = monthNames[d.getMonth()];
+      // console.log(dateDiff);
+      // console.log(pDateDay, "pdd");
+      // console.log(pDateMonth, "pdm");
+      // console.log(ddSec, "ddsec");
+      // console.log(ddMin, "dmin");
+      // console.log(ddHours, "dHours");
+      // console.log(ddDays, "ddDays");
+
+      if (ddSec < 60) {
+        postDispTime = `${Math.floor(ddSec)}s`;
+        // console.log("sec do");
+      } else if (ddMin >= 1 && ddMin < 60) {
+        postDispTime = `${Math.floor(ddMin)}m`;
+        // console.log("min do");
+      } else if (ddHours >= 1 && ddHours < 24) {
+        postDispTime = `${Math.floor(ddHours)}h`;
+        // console.log("hour do");
+      } else if (ddDays >= 1 && ddDays < 7) {
+        postDispTime = `${Math.floor(ddDays)}d`;
+        // console.log("day do");
+      } else {
+        postDispTime = `${pDateDay} ${pDateMonth}`;
+        // console.log("else do");
+      }
+      // console.log(postDispTime, "sd");
+
+      return `<div class="card-body bg-white p-2 mb-3 posts">
+  <a href="visitprofile.php?id='${
+    post.user_id
+  }'" class="card-title position-relative d-flex">
+      <img class="status-pic rounded-circle mr-3" src="assets/pictures/${
+        post.picture
+      }"
+          alt="profile picture">
+      <div class="d-flex pr-4 w-100 justify-content-between">
+          <h6 class="color-second">${post.firstname} ${post.lastname}</h6>
+          <span class="border border-primary type px-1">Student</span>
+      </div>
+
+      <span class="position-absolute timespan text-secondary">${postDispTime}</span>
+  </a>
+  <p class="card-text">${post.post_text}</p>
+  <img class="w-100 ${postImageDisp}" src="assets/pictures/${
+        post.post_image == null ? "128801575470745.jpg" : post.post_image
+      }" alt="post picture">
+  
+      <div class="${postLikeComDisp} post-like-con">
+  <hr class="m-1">
+  <div class="d-flex justify-content-between px-3">
+      <div class="d-flex">
+          <div class="bg-primary like-container position-relative mr-1 rounded-circle">
+              <i class="fas position-absolute like fa-thumbs-up"></i>
+          </div>
+
+          <div class="like-count text-secondary">${likeCount}</div>
+      </div>
+
+      <div class="text-secondary">
+         <span class="commentNum">${commentCount} Comment</span>
+      </div>
+
+  </div> 
+</div>
+
+  <hr class="m-2">
+  <div class="d-flex justify-content-around text-secondary">
+      <button value="${post.post_id}" class="btn post-like">
+          <i class="far fa-thumbs-up ${userLikeCondition}"></i>
+          <span class="${userLikeCondition}">Like</span>
+      </button>
+
+      <button value="${post.post_id}" class="btn post-comment">
+          <i class="far fa-comment-alt text-secondary"></i>
+          <span>Comment</span>
+      </button>
+  </div>
+
+                  <hr class="m-2">
+                    <div class="post-comment-contain ${commentDisp}">
+                        
+                       ${commentsHtml} 
+                    </div>
+
+                    <div class="d-flex mt-2">
+                    <img class="profile-pic mr-2 rounded-circle" src="assets/pictures/${
+                      user.picture
+                    }" alt="profile picture">
+                    <div class="post-comment-input-contain d-flex w-90">
+                       
+                        <textarea placeholder="write a comment here"
+                            class="post-comment-input resize-none bg-my-secondary rounded-left border outline-none border-secondary border-right-0 w-90 px-2 outline-none"
+                            name="post-text" cols="30" rows="1"></textarea>
+                        <div
+                            class="bg-my-secondary border border-secondary border-left-0 rounded-right px-2 outline-none">
+                            <button  value="${
+                              post.post_id
+                            }" class="btn post-comment-btn p-0"><i
+                                    class="far fa-comment-alt text-secondary"></i></button>
+                        </div>
+                    </div>
+                </div>
+              </div>`;
+    });
+    // console.log($("#home-timeline"));
+    $(".profile-posts-container").html(postHtml);
+  }
+
+  //load post api call
+  $.post("./includes/loadprofileposts.php", function(data) {
+    console.log($(".profile-posts-container"));
+    // profile-posts-container
+    if (data !== "") {
+      let posts = JSON.parse(data);
+      console.log(posts);
+      posts = posts.sort(function(a, b) {
+        return b.post_id - a.post_id;
+      });
+      console.log(posts);
+      $(".postsNum").html(`${posts.length}`);
+      renderPosts(posts);
+    }
   });
 });
