@@ -720,15 +720,15 @@ $(document).ready(function() {
     // console.log($(".profile-posts-container"));
     console.log(data);
     // profile-posts-container
-    if (data !== "") {
-      let posts = JSON.parse(data);
-      console.log(posts);
-      posts = posts.sort(function(a, b) {
-        return b.post_id - a.post_id;
-      });
-      console.log(posts);
-      $(".postsNum").html(`${posts.length}`);
-      renderPosts(posts);
-    }
+    // if (data !== "") {
+    //   let posts = JSON.parse(data);
+    //   console.log(posts);
+    //   posts = posts.sort(function(a, b) {
+    //     return b.post_id - a.post_id;
+    //   });
+    //   console.log(posts);
+    //   $(".postsNum").html(`${posts.length}`);
+    //   renderPosts(posts);
+    // }
   });
 });
