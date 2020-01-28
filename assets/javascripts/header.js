@@ -717,7 +717,8 @@ $(document).ready(function() {
 
   //load post api call
   $.post("./includes/loadprofileposts.php", function(data) {
-    console.log($(".profile-posts-container"));
+    // console.log($(".profile-posts-container"));
+    console.log(data);
     // profile-posts-container
     if (data !== "") {
       let posts = JSON.parse(data);
