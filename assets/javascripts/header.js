@@ -7,8 +7,8 @@ $(document).ready(function() {
   let user;
   let fullname;
   $.post("./includes/session.php", function(data) {
+    console.log(data);
     const a = JSON.parse(data);
-    // console.log(a);
 
     if (a) {
       user = a[0];
