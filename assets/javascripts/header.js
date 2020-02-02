@@ -714,21 +714,24 @@ $(document).ready(function() {
     // console.log($("#home-timeline"));
     $(".profile-posts-container").html(postHtml);
   }
-
+  // ./includes/loadprofileposts.php
   //load post api call
-  $.post("./includes/loadprofileposts.php", function(data) {
-    // console.log($(".profile-posts-container"));
-    console.log(data);
-    // profile-posts-container
-    // if (data !== "") {
-    //   let posts = JSON.parse(data);
-    //   console.log(posts);
-    //   posts = posts.sort(function(a, b) {
-    //     return b.post_id - a.post_id;
-    //   });
-    //   console.log(posts);
-    //   $(".postsNum").html(`${posts.length}`);
-    //   renderPosts(posts);
-    // }
-  });
+  $.post(
+    "https://sqisocialapp.herokuapp.com/includes/loadprofileposts.php",
+    function(data) {
+      // console.log($(".profile-posts-container"));
+      console.log(data);
+      profile - posts - container;
+      if (data !== "") {
+        let posts = JSON.parse(data);
+        console.log(posts);
+        posts = posts.sort(function(a, b) {
+          return b.post_id - a.post_id;
+        });
+        console.log(posts);
+        $(".postsNum").html(`${posts.length}`);
+        renderPosts(posts);
+      }
+    }
+  );
 });
