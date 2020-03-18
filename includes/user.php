@@ -569,6 +569,7 @@ echo "unlike";
 
   public function load_profile_posts($id) {
     global $database;
+    echo $id . " here is id";
     // $sql = "SELECT user.user_id, user.firstname, user.lastname, user.picture, posts.id post_id, posts.text post_text, posts.image post_image, posts.time post_time, GROUP_CONCAT(likes.id) like_id, GROUP_CONCAT(likes.liker_id) liker_id, c.comment_id, c.commenter_id, c.commenter_fullname, c.commenter_picture, c.comment_text, c.comment_time FROM posts INNER JOIN user USING(user_id) LEFT JOIN likes ON (likes.post_id=posts.id) LEFT JOIN (SELECT user.user_id, posts.id, comments.post_id cpid, GROUP_CONCAT(comments.id) comment_id, GROUP_CONCAT(comments.commenter_id) commenter_id, GROUP_CONCAT(CONCAT(user.firstname,' ', user.lastname)) commenter_fullname, GROUP_CONCAT(user.picture) commenter_picture, GROUP_CONCAT(comments.text SEPARATOR '----') comment_text, GROUP_CONCAT(comments.time) comment_time FROM comments RIGHT JOIN posts ON (comments.post_id = posts.id ) RIGHT JOIN user ON (commenter_id = user.user_id) GROUP BY comments.post_id) c ON (c.id = posts.id) WHERE posts.user_id='$id' GROUP BY posts.id ORDER BY post_time DESC";
     $sql ="SELECT * FROM user WHERE id = '$id'";
     $result = $database->conn->query($sql);
