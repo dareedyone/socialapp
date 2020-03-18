@@ -1,8 +1,8 @@
 <?php 
 define('SERVER_NAME', 'remotemysql.com');
-define('USER_NAME', 'oJnfkTCllo');
-define('PASSWORD', 'frogYIBvRU');
-define('DB_NAME', 'oJnfkTCllo');
+define('USER_NAME', 'I5Q1IKgCEA');
+define('PASSWORD', 'syGdLUMSLD');
+define('DB_NAME', 'I5Q1IKgCEA');
 
 // define('SERVER_NAME', 'localhost');
 // define('USER_NAME', 'root');
